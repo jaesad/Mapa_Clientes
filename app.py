@@ -6,6 +6,7 @@ import asyncio
 from geopy.geocoders import Nominatim
 import webbrowser  
 import pathlib
+from branca.element import Template, MacroElement
 
 # --- CLASE DE GESTIÓN DE DATOS ---
 class MapManager:
@@ -30,6 +31,10 @@ class MapManager:
             return None, None
         return None, None
 
+    from branca.element import Template, MacroElement # Añade estas importaciones arriba
+
+# ... dentro de la clase MapManager ...
+
     async def generar_mapa(self):
         if not os.path.exists(self.json_path):
             return False, "Error: No se encuentra el archivo JSON."
@@ -37,9 +42,22 @@ class MapManager:
         with open(self.json_path, 'r', encoding='utf-8') as f:
             clientes = json.load(f)
 
-        actualizado = False
-        mapa = folium.Map(location=[40.4167, -3.7037], zoom_start=8)
+        # Definición de colores
+        colores_grupos = {
+            "NEOPRO": "lightblue",
+            "EHLIS": "red",
+            "ASIDE": "cadetblue", # El más parecido a marrón en folium estándar
+            "CECOFERSA": "darkred",
+            "COFERDROZA": "darkblue",
+            "EL SABIO": "orange",
+            "FACTOR PRO": "orange",
+            "GRUPO GCI": "orange"
+        }
 
+        actualizado = False
+        mapa = folium.Map(location=[40.5, -3.5], zoom_start=9)
+
+        # 1. Creamos los marcadores
         for c in clientes:
             if "lat" not in c or "lon" not in c:
                 lat, lon = await self.obtener_coordenadas(c)
@@ -49,13 +67,50 @@ class MapManager:
                     await asyncio.sleep(1) 
 
             if "lat" in c:
-                popup_text = f"<b>{c.get('Nombre')}</b><br>{c.get('Dirección')}"
+                grupo_raw = str(c.get("Grupo", "")).upper().strip()
+                color_icono = colores_grupos.get(grupo_raw, "gray")
+                
+                poblacion = c.get("Población ", "N/A")
+                
+                info_popup = f"""
+                <div style='font-family: Arial; font-size: 13px; width: 200px;'>
+                    <b style='color: #2c3e50;'>{c.get('Nombre')}</b><br>
+                    <hr>
+                    <b>Población:</b> {poblacion}<br>
+                    <b>Grupo:</b> {c.get('Grupo', 'Sin Grupo')}
+                </div>
+                """
                 folium.Marker(
                     location=[c["lat"], c["lon"]],
-                    popup=folium.Popup(popup_text, max_width=250),
+                    popup=folium.Popup(info_popup, max_width=300),
                     tooltip=c.get("Nombre"),
-                    icon=folium.Icon(color="blue", icon="flag")
+                    icon=folium.Icon(color=color_icono, icon="flag")
                 ).add_to(mapa)
+
+        # 2. AÑADIR LA LEYENDA (HTML/CSS inyectado en Folium)
+        template = """
+        {% macro html(this, kwargs) %}
+        <div id='maplegend' class='maplegend' 
+            style='position: fixed; z-index:9999; border:2px solid grey; background-color:rgba(255, 255, 255, 0.8);
+             border-radius:6px; padding: 10px; font-size:14px; right: 20px; bottom: 20px;'>
+          <div class='legend-title'>Grupos de Clientes</div>
+          <div class='legend-scale'>
+            <ul class='legend-labels' style='list-style:none; padding:0; margin:0;'>
+              <li><span style='background:lightblue; width:12px; height:12px; display:inline-block;'></span> Neopro</li>
+              <li><span style='background:red; width:12px; height:12px; display:inline-block;'></span> Ehlis</li>
+              <li><span style='background:cadetblue; width:12px; height:12px; display:inline-block;'></span> Aside</li>
+              <li><span style='background:darkred; width:12px; height:12px; display:inline-block;'></span> Cecofersa</li>
+              <li><span style='background:darkblue; width:12px; height:12px; display:inline-block;'></span> Coferdroza</li>
+              <li><span style='background:orange; width:12px; height:12px; display:inline-block;'></span> El Sabio / Factor Pro / GCI</li>
+            </ul>
+          </div>
+        </div>
+        {% endmacro %}
+        """
+
+        macro = MacroElement()
+        macro._template = Template(template)
+        mapa.get_root().add_child(macro)
 
         if actualizado:
             with open(self.json_path, 'w', encoding='utf-8') as f:
