@@ -2,147 +2,131 @@ import flet as ft
 import folium
 import json
 import os
-import time
+import asyncio
 from geopy.geocoders import Nominatim
-from geopy.exc import GeocoderTimedOut
+import webbrowser  
+import pathlib
 
-def main(page: ft.Page):
-    page.title = "Mapa de Clientes - Gestión"
-    page.theme_mode = ft.ThemeMode.LIGHT
+# --- CLASE DE GESTIÓN DE DATOS ---
+class MapManager:
+    def __init__(self, json_path):
+        self.json_path = json_path
+        self.geolocator = Nominatim(user_agent="visor_clientes_2026")
+        self.map_file = "mapa_clientes.html"
 
-    # --- CONFIGURACIÓN ---
-    json_file = 'clientes.json'
-    map_html = 'mapa_clientes.html'
-    
-    # Inicializamos el geocodificador (OpenStreetMap)
-    geolocator = Nominatim(user_agent="mi_app_clientes_v1")
-
-    # --- FUNCIONES LÓGICAS ---
-
-    def geocodificar_direccion(direccion_completa):
-        """Convierte texto en lat/lon"""
+    async def obtener_coordenadas(self, cliente):
+        pob = cliente.get("Población ", "").strip()
+        dir_calle = cliente.get("Dirección", "").strip()
+        prov = cliente.get("Provincia", "").strip()
+        full_address = f"{dir_calle}, {pob}, {prov}, España"
+        
         try:
-            location = geolocator.geocode(direccion_completa, timeout=10)
+            # Ejecutamos en hilo para no bloquear
+            loop = asyncio.get_event_loop()
+            location = await loop.run_in_executor(None, lambda: self.geolocator.geocode(full_address, timeout=10))
             if location:
                 return location.latitude, location.longitude
-        except (GeocoderTimedOut, Exception) as e:
-            print(f"Error geocodificando {direccion_completa}: {e}")
+        except:
+            return None, None
         return None, None
 
-    def procesar_datos_y_generar_mapa():
-        """Lee el JSON, completa coordenadas si faltan y crea el mapa"""
-        
-        # 1. Cargar datos
-        try:
-            with open(json_file, 'r', encoding='utf-8') as f:
-                clientes = json.load(f)
-        except FileNotFoundError:
-            return None, "No se encontró el archivo clientes.json"
+    async def generar_mapa(self):
+        if not os.path.exists(self.json_path):
+            return False, "Error: No se encuentra el archivo JSON."
 
-        datos_modificados = False
-        
-        # 2. Crear mapa base (Centrado en Guadalajara/Madrid aprox)
-        m = folium.Map(location=[40.5, -3.5], zoom_start=9)
-        
-        # 3. Procesar cada cliente
-        for cliente in clientes:
-            # Si no tiene latitud, intentamos buscarla
-            if "lat" not in cliente or "lon" not in cliente:
-                print(f"Buscando coordenadas para: {cliente.get('Nombre', 'Sin nombre')}")
-                
-                # Construimos la dirección completa para mejorar precisión
-                # OJO: Uso las claves exactas de tu JSON
-                poblacion = cliente.get("Población ", "") # Nota el espacio extra que tenías en tu JSON
-                direccion = cliente.get("Dirección", "")
-                provincia = cliente.get("Provincia", "")
-                
-                full_address = f"{direccion}, {poblacion}, {provincia}, España"
-                
-                lat, lon = geocodificar_direccion(full_address)
-                
-                if lat and lon:
-                    cliente["lat"] = lat
-                    cliente["lon"] = lon
-                    datos_modificados = True
-                    # Pausa pequeña para no saturar el servicio gratuito de mapas
-                    time.sleep(1) 
-                else:
-                    print(f" -- No se pudo localizar: {full_address}")
-                    continue # Si no hay coords, no ponemos pin
+        with open(self.json_path, 'r', encoding='utf-8') as f:
+            clientes = json.load(f)
 
-            # 4. Añadir marcador al mapa
-            if "lat" in cliente and "lon" in cliente:
-                
-                # HTML para el popup (lo que sale al pinchar)
-                info_html = f"""
-                <div style="font-family: Arial; min-width: 200px;">
-                    <h4 style="margin-bottom:5px; color:#333;">{cliente.get('Nombre', 'Cliente')}</h4>
-                    <hr>
-                    <b>Dir:</b> {cliente.get('Dirección', '')}<br>
-                    <b>Pob:</b> {cliente.get('Población ', '')}<br>
-                    <b>Tel:</b> {cliente.get('Tlefono', 'N/A')}<br>
-                    <b>Grupo:</b> {cliente.get('Grupo', '')}
-                </div>
-                """
-                
+        actualizado = False
+        mapa = folium.Map(location=[40.4167, -3.7037], zoom_start=8)
+
+        for c in clientes:
+            if "lat" not in c or "lon" not in c:
+                lat, lon = await self.obtener_coordenadas(c)
+                if lat:
+                    c["lat"], c["lon"] = lat, lon
+                    actualizado = True
+                    await asyncio.sleep(1) 
+
+            if "lat" in c:
+                popup_text = f"<b>{c.get('Nombre')}</b><br>{c.get('Dirección')}"
                 folium.Marker(
-                    location=[cliente["lat"], cliente["lon"]],
-                    popup=folium.Popup(info_html, max_width=300),
-                    tooltip=cliente.get("Nombre"),
-                    icon=folium.Icon(color="blue", icon="flag", prefix='fa')
-                ).add_to(m)
+                    location=[c["lat"], c["lon"]],
+                    popup=folium.Popup(popup_text, max_width=250),
+                    tooltip=c.get("Nombre"),
+                    icon=folium.Icon(color="blue", icon="flag")
+                ).add_to(mapa)
 
-        # 5. Guardar cambios en el JSON si hubo geocodificación
-        if datos_modificados:
-            with open(json_file, 'w', encoding='utf-8') as f:
+        if actualizado:
+            with open(self.json_path, 'w', encoding='utf-8') as f:
                 json.dump(clientes, f, ensure_ascii=False, indent=4)
-            print("JSON actualizado con nuevas coordenadas.")
 
-        # 6. Guardar archivo HTML del mapa
-        m.save(map_html)
-        return os.path.abspath(map_html), "Mapa generado correctamente"
+        mapa.save(self.map_file)
+        return True, os.path.abspath(self.map_file)
 
-    # --- INTERFAZ GRÁFICA (FLET) ---
+# --- INTERFAZ ---
+async def main(page: ft.Page):
+    page.title = "Gestión de Rutas 2026"
+    page.theme_mode = ft.ThemeMode.DARK
+    page.vertical_alignment = "center"
+    page.horizontal_alignment = "center"
     
-    msg_estado = ft.Text("Iniciando...", color=ft.Colors.BLUE)
+    manager = MapManager("clientes.json")
     
-    # Generamos el mapa y obtenemos la ruta
-    ruta_mapa, mensaje = procesar_datos_y_generar_mapa()
-    msg_estado.value = mensaje
+    status_text = ft.Text("Listo", color=ft.Colors.GREY_400)
+    loading_ring = ft.ProgressRing(visible=False, width=20, height=20)
 
-    if ruta_mapa:
-        # Leemos el contenido del HTML generado por Folium
-        with open(ruta_mapa, "r", encoding="utf-8") as f:
-            html_content = f.read()
+    async def on_btn_click(e):
+        btn_lanzar.disabled = True
+        loading_ring.visible = True
+        status_text.value = "Generando mapa..."
+        page.update() 
+
+        exito, resultado = await manager.generar_mapa() 
+
+        loading_ring.visible = False
+        btn_lanzar.disabled = False
         
-        # Usamos HtmlView en lugar de WebView
-        # Esto es más compatible y moderno en Flet
-        web_map = ft.HtmlView(
-            html_content=html_content,
-            expand=True,
-        )
-    else:
-        web_map = ft.Container(content=ft.Text("Error cargando mapa"))
+        if exito:
+            status_text.value = "¡Mapa abierto!"
+            # Convertimos la ruta a un formato que Windows entienda perfectamente
+            file_url = pathlib.Path(resultado).as_uri()
+            
+            # Usamos la librería estándar de Python en lugar de page.launch_url
+            # Esto evita el error de ShellExecute de Flet
+            webbrowser.open(file_url)
+        else:
+            status_text.value = resultado
+        
+        page.update()
 
-    # Layout idéntico al anterior
+    btn_lanzar = ft.Button(
+        "ABRIR MAPA DE CLIENTES",
+        icon=ft.Icons.EXPLORE,
+        on_click=on_btn_click,
+        width=300,
+        height=50
+    )
+
+    # Quitamos el await de page.add()
     page.add(
-        ft.Column(
-            [
-                ft.Container(
-                    content=ft.Row([
-                        ft.Icon(ft.Icons.MAP_OUTLINED),
-                        ft.Text("Visor de Clientes: Madrid - Toledo - Guadalajara", size=20, weight="bold")
-                    ]),
-                    padding=10,
-                    bgcolor=ft.Colors.SURFACE_VARIANT
-                ),
-                msg_estado,
-                ft.Container(content=web_map, expand=True)
-            ],
-            expand=True
+        ft.Container(
+            content=ft.Column(
+                [
+                    ft.Icon(ft.Icons.MAP_ROUNDED, size=80, color=ft.Colors.BLUE_400),
+                    ft.Text("Visor Geográfico", size=30, weight="bold"),
+                    ft.Text("Madrid - Toledo - Guadalajara", color=ft.Colors.BLUE_200),
+                    ft.Divider(height=30, color=ft.Colors.TRANSPARENT),
+                    btn_lanzar,
+                    ft.Row([loading_ring, status_text], alignment="center")
+                ],
+                horizontal_alignment="center",
+            ),
+            padding=40,
+            border_radius=20,
+            bgcolor=ft.Colors.GREY_900,
         )
     )
 
 if __name__ == "__main__":
-    # Si quieres que se abra directamente en el navegador, usa ft.AppViewer.WEB_BROWSER
     ft.app(target=main)
