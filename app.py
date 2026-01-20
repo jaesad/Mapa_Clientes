@@ -3,9 +3,9 @@ import folium
 import json
 import os
 import asyncio
-from geopy.geocoders import Nominatim
-import webbrowser  
+import webbrowser
 import pathlib
+from geopy.geocoders import Nominatim
 from branca.element import Template, MacroElement
 
 # --- CLASE DE GESTIÓN DE DATOS ---
@@ -20,96 +20,81 @@ class MapManager:
         dir_calle = cliente.get("Dirección", "").strip()
         prov = cliente.get("Provincia", "").strip()
         full_address = f"{dir_calle}, {pob}, {prov}, España"
-        
         try:
-            # Ejecutamos en hilo para no bloquear
             loop = asyncio.get_event_loop()
             location = await loop.run_in_executor(None, lambda: self.geolocator.geocode(full_address, timeout=10))
-            if location:
-                return location.latitude, location.longitude
-        except:
-            return None, None
+            if location: return location.latitude, location.longitude
+        except: return None, None
         return None, None
 
-    from branca.element import Template, MacroElement # Añade estas importaciones arriba
-
-# ... dentro de la clase MapManager ...
-
-    async def generar_mapa(self):
+    async def generar_mapa(self, provincia_filtro="TODAS"):
         if not os.path.exists(self.json_path):
             return False, "Error: No se encuentra el archivo JSON."
 
         with open(self.json_path, 'r', encoding='utf-8') as f:
             clientes = json.load(f)
 
-        # Definición de colores
         colores_grupos = {
-            "NEOPRO": "lightblue",
-            "EHLIS": "red",
-            "ASIDE": "cadetblue", # El más parecido a marrón en folium estándar
-            "CECOFERSA": "darkred",
-            "COFERDROZA": "darkblue",
-            "EL SABIO": "orange",
-            "FACTOR PRO": "orange",
-            "GRUPO GCI": "orange"
+            "NEOPRO": "lightblue", "EHLIS": "red", "ASIDE": "cadetblue",
+            "CECOFERSA": "darkred", "COFERDROZA": "darkblue",
+            "EL SABIO": "orange", "FACTOR PRO": "orange", "GRUPO GCI": "orange"
         }
 
-        actualizado = False
-        mapa = folium.Map(location=[40.5, -3.5], zoom_start=9)
+        # Configuración de centros por provincia
+        centros = {
+            "MADRID": [40.4167, -3.7037],
+            "TOLEDO": [39.8628, -4.0273],
+            "GUADALAJARA": [40.6333, -3.1667],
+            "TODAS": [40.2, -3.7]
+        }
+        
+        centro = centros.get(provincia_filtro, centros["TODAS"])
+        zoom = 10 if provincia_filtro != "TODAS" else 8
+        mapa = folium.Map(location=centro, zoom_start=zoom)
 
-        # 1. Creamos los marcadores
+        actualizado = False
         for c in clientes:
+            prov_cliente = str(c.get("Provincia", "")).upper().strip()
+            
+            # FILTRO DE PROVINCIA
+            if provincia_filtro != "TODAS" and prov_cliente != provincia_filtro:
+                continue
+
             if "lat" not in c or "lon" not in c:
                 lat, lon = await self.obtener_coordenadas(c)
                 if lat:
                     c["lat"], c["lon"] = lat, lon
                     actualizado = True
-                    await asyncio.sleep(1) 
+                    await asyncio.sleep(1)
 
             if "lat" in c:
                 grupo_raw = str(c.get("Grupo", "")).upper().strip()
                 color_icono = colores_grupos.get(grupo_raw, "gray")
-                
-                poblacion = c.get("Población ", "N/A")
-                
                 info_popup = f"""
                 <div style='font-family: Arial; font-size: 13px; width: 200px;'>
-                    <b style='color: #2c3e50;'>{c.get('Nombre')}</b><br>
-                    <hr>
-                    <b>Población:</b> {poblacion}<br>
-                    <b>Grupo:</b> {c.get('Grupo', 'Sin Grupo')}
-                </div>
-                """
+                    <b>{c.get('Nombre')}</b><br><hr>
+                    <b>Población:</b> {c.get('Población ')}<br>
+                    <b>Grupo:</b> {c.get('Grupo')}
+                </div>"""
                 folium.Marker(
                     location=[c["lat"], c["lon"]],
                     popup=folium.Popup(info_popup, max_width=300),
-                    tooltip=c.get("Nombre"),
                     icon=folium.Icon(color=color_icono, icon="flag")
                 ).add_to(mapa)
 
-        # 2. AÑADIR LA LEYENDA (HTML/CSS inyectado en Folium)
+        # Leyenda HTML
         template = """
         {% macro html(this, kwargs) %}
-        <div id='maplegend' class='maplegend' 
-            style='position: fixed; z-index:9999; border:2px solid grey; background-color:rgba(255, 255, 255, 0.8);
-             border-radius:6px; padding: 10px; font-size:14px; right: 20px; bottom: 20px;'>
-          <div class='legend-title'>Grupos de Clientes</div>
-          <div class='legend-scale'>
-            <ul class='legend-labels' style='list-style:none; padding:0; margin:0;'>
-              <li><span style='background:lightblue; width:12px; height:12px; display:inline-block;'></span> Neopro</li>
-              <li><span style='background:red; width:12px; height:12px; display:inline-block;'></span> Ehlis</li>
-              <li><span style='background:cadetblue; width:12px; height:12px; display:inline-block;'></span> Aside</li>
-              <li><span style='background:darkred; width:12px; height:12px; display:inline-block;'></span> Cecofersa</li>
-              <li><span style='background:darkblue; width:12px; height:12px; display:inline-block;'></span> Coferdroza</li>
-              <li><span style='background:orange; width:12px; height:12px; display:inline-block;'></span> El Sabio / Factor Pro / GCI</li>
-            </ul>
-          </div>
+        <div style='position: fixed; z-index:9999; border:2px solid grey; background-color:rgba(255, 255, 255, 0.8);
+             border-radius:6px; padding: 10px; font-size:12px; right: 20px; bottom: 20px;'>
+          <b>Leyenda Grupos</b><br>
+          <span style='background:lightblue; width:10px; height:10px; display:inline-block;'></span> Neopro<br>
+          <span style='background:red; width:10px; height:10px; display:inline-block;'></span> Ehlis<br>
+          <span style='background:darkblue; width:10px; height:10px; display:inline-block;'></span> Coferdroza<br>
+          <span style='background:orange; width:10px; height:10px; display:inline-block;'></span> Naranjas (GCI/Sabio/Factor)
         </div>
-        {% endmacro %}
-        """
-
-        macro = MacroElement()
-        macro._template = Template(template)
+        {% endmacro %}"""
+        macro = MacroElement(); macro._template = Template(template)
         mapa.get_root().add_child(macro)
 
         if actualizado:
@@ -121,12 +106,26 @@ class MapManager:
 
 # --- INTERFAZ ---
 async def main(page: ft.Page):
-    page.title = "Gestión de Rutas 2026"
+    page.title = "Gestor de Mapas 2026"
     page.theme_mode = ft.ThemeMode.DARK
+    page.window_width, page.window_height = 500, 600
     page.vertical_alignment = "center"
     page.horizontal_alignment = "center"
     
     manager = MapManager("clientes.json")
+    
+    # Selector de Provincia
+    selector_provincia = ft.Dropdown(
+        label="Selecciona Provincia",
+        width=300,
+        options=[
+            ft.dropdown.Option("TODAS"),
+            ft.dropdown.Option("MADRID"),
+            ft.dropdown.Option("TOLEDO"),
+            ft.dropdown.Option("GUADALAJARA"),
+        ],
+        value="TODAS",
+    )
     
     status_text = ft.Text("Listo", color=ft.Colors.GREY_400)
     loading_ring = ft.ProgressRing(visible=False, width=20, height=20)
@@ -134,44 +133,39 @@ async def main(page: ft.Page):
     async def on_btn_click(e):
         btn_lanzar.disabled = True
         loading_ring.visible = True
-        status_text.value = "Generando mapa..."
-        page.update() 
+        status_text.value = f"Generando mapa de {selector_provincia.value}..."
+        page.update()
 
-        exito, resultado = await manager.generar_mapa() 
+        exito, resultado = await manager.generar_mapa(selector_provincia.value)
 
         loading_ring.visible = False
         btn_lanzar.disabled = False
         
         if exito:
-            status_text.value = "¡Mapa abierto!"
-            # Convertimos la ruta a un formato que Windows entienda perfectamente
+            status_text.value = "Mapa abierto correctamente"
             file_url = pathlib.Path(resultado).as_uri()
-            
-            # Usamos la librería estándar de Python en lugar de page.launch_url
-            # Esto evita el error de ShellExecute de Flet
             webbrowser.open(file_url)
         else:
             status_text.value = resultado
-        
         page.update()
 
     btn_lanzar = ft.Button(
-        "ABRIR MAPA DE CLIENTES",
+        "GENERAR Y ABRIR MAPA",
         icon=ft.Icons.EXPLORE,
         on_click=on_btn_click,
         width=300,
         height=50
     )
 
-    # Quitamos el await de page.add()
     page.add(
         ft.Container(
             content=ft.Column(
                 [
-                    ft.Icon(ft.Icons.MAP_ROUNDED, size=80, color=ft.Colors.BLUE_400),
-                    ft.Text("Visor Geográfico", size=30, weight="bold"),
-                    ft.Text("Madrid - Toledo - Guadalajara", color=ft.Colors.BLUE_200),
-                    ft.Divider(height=30, color=ft.Colors.TRANSPARENT),
+                    ft.Icon(ft.Icons.LOCATION_ON, size=60, color=ft.Colors.BLUE_400),
+                    ft.Text("Filtro Geográfico", size=25, weight="bold"),
+                    ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
+                    selector_provincia,
+                    ft.Divider(height=10, color=ft.Colors.TRANSPARENT),
                     btn_lanzar,
                     ft.Row([loading_ring, status_text], alignment="center")
                 ],
