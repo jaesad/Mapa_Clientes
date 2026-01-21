@@ -1,4 +1,4 @@
-flet
+streamlit
+streamlit-folium
 folium
 requests
-pandas
