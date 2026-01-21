@@ -23,7 +23,9 @@ def obtener_datos():
         return []
 
 # --- INTERFAZ STREAMLIT ---
-st.set_page_config(page_title="Visor Clientes", layout="wide")
+st.set_page_config(page_title="Visor Clientes",
+                   page_icon="https://raw.githubusercontent.com/jaesad/Mapa_Clientes/main/logo.png", 
+                   layout="wide")
 st.title("📍 Visor de Clientes con GPS")
 
 # --- SIDEBAR ---
