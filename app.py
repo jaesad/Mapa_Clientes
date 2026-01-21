@@ -129,4 +129,4 @@ async def main(page: ft.Page):
 if __name__ == "__main__":
     # El puerto lo asigna el servidor automáticamente
     port = int(os.getenv("PORT", 8080))
-    ft.app(target=main, view=ft.AppView.WEB_BROWSER, port=port)
+    ft.run(main, port=port)
