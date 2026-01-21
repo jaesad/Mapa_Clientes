@@ -28,7 +28,7 @@ st.title("📍 Visor de Clientes con GPS")
 
 # --- SIDEBAR ---
 st.sidebar.header("Filtros")
-provincia = st.sidebar.selectbox("Provincia", ["TODAS", "MADRID", "TOLEDO", "GUADALAJARA", "CUENCA", "CIUDAD REAL", "ALBACETE"])
+provincia = st.sidebar.selectbox("Provincia", ["TODAS", "MADRID", "TOLEDO", "GUADALAJARA"])
 # Al cambiar el texto aquí, todo el mapa se actualizará solo
 busqueda = st.sidebar.text_input("Buscar por nombre:", "")
 
