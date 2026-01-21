@@ -5,128 +5,96 @@ import requests
 import base64
 import os
 
-# --- CONFIGURACIÓN ---
-# He puesto tus datos de GitHub para que funcione nada más desplegar
+# --- CONFIGURACIÓN SEGURA ---
 GITHUB_TOKEN = os.getenv("MY_GITHUB_TOKEN") 
 REPO_OWNER = "jaesad"
 REPO_NAME = "Mapa_Clientes"
 FILE_JSON = "Clientes.json"
 
-# Verificación de seguridad para la consola
-if not GITHUB_TOKEN:
-    print("ERROR: No se ha encontrado la Variable de Entorno MY_GITHUB_TOKEN")
-    
 class MapManager:
     def obtener_datos(self):
         url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/contents/{FILE_JSON}"
-        headers = {
-            'Authorization': f'token {GITHUB_TOKEN}',
-            'Accept': 'application/vnd.github.v3.raw'
-        }
+        headers = {'Authorization': f'token {GITHUB_TOKEN}', 'Accept': 'application/vnd.github.v3.raw'}
         try:
             res = requests.get(url, headers=headers)
             if res.status_code == 200:
-                clientes = res.json()
-                # Si GitHub devuelve un string, lo cargamos como JSON
-                if isinstance(clientes, str):
-                    return json.loads(clientes)
-                return clientes
+                # Si el repo es público o usamos el raw, a veces viene como texto plano
+                return res.json()
             return []
-        except Exception as e:
-            print(f"Error descargando datos: {e}")
+        except:
             return []
 
     def crear_mapa_html(self, provincia_filtro):
         clientes = self.obtener_datos()
-        # Centro de España
         mapa = folium.Map(location=[40.4167, -3.7037], zoom_start=6)
         
-        colores = {
-            "NEOPRO": "lightblue", 
-            "EHLIS": "red", 
-            "ASIDE": "black", 
-            "CECOFERSA": "purple"
-        }
+        colores = {"NEOPRO": "lightblue", "EHLIS": "red", "ASIDE": "black", "CECOFERSA": "purple"}
 
         for c in clientes:
             if not isinstance(c, dict): continue
             prov = str(c.get("Provincia", "")).upper()
-            
             if provincia_filtro == "TODAS" or provincia_filtro in prov:
                 try:
                     lat = float(str(c.get("lat")).replace(',', '.'))
                     lon = float(str(c.get("lon")).replace(',', '.'))
-                    grupo = str(c.get("Grupo", "")).upper()
-                    color = colores.get(grupo, "green")
-                    
-                    folium.Marker(
-                        [lat, lon], 
-                        popup=f"<b>{c['Nombre']}</b>",
-                        tooltip=c['Nombre'],
-                        icon=folium.Icon(color=color, icon="flag")
-                    ).add_to(mapa)
-                except:
-                    continue
+                    color = colores.get(str(c.get("Grupo", "")).upper(), "green")
+                    folium.Marker([lat, lon], popup=c['Nombre'], 
+                                  icon=folium.Icon(color=color, icon="flag")).add_to(mapa)
+                except: continue
         
-        # Esta línea es la clave: convierte el mapa en texto HTML para mostrarlo en la web
         return mapa._repr_html_()
 
 async def main(page: ft.Page):
-    page.title = "Visor Clientes Online"
+    page.title = "Mapa de Clientes 2026"
+    page.horizontal_alignment = "center"
+    page.vertical_alignment = "center"
     page.theme_mode = "dark"
-    page.padding = 20
     
     manager = MapManager()
     
-    # Este componente mostrará el mapa dinámicamente
-    mapa_web = ft.Html(value="", expand=True)
-    
-    # Texto de estado
-    status = ft.Text("Selecciona una provincia y pulsa Ver Mapa", size=12, color="grey")
-    loading = ft.ProgressBar(visible=False, width=400)
+    status = ft.Text("Selecciona provincia y pulsa el botón", color="grey")
+    loading = ft.ProgressBar(visible=False, width=300)
 
     async def mostrar_mapa(e):
         loading.visible = True
-        status.value = "Cargando datos de GitHub y generando mapa..."
+        status.value = "Generando mapa..."
         page.update()
         
-        # Generamos el HTML del mapa
-        html_content = manager.crear_mapa_html(selector.value)
-        
-        # Lo "inyectamos" en la interfaz
-        mapa_web.value = html_content
+        try:
+            # 1. Generamos el HTML
+            html_content = manager.crear_mapa_html(selector.value)
+            
+            # 2. Lo convertimos a Base64 para que el navegador lo entienda como una URL
+            b64_html = base64.b64encode(html_content.encode()).decode()
+            data_url = f"data:text/html;base64,{b64_html}"
+            
+            # 3. LANZAMOS LA URL (Esto abre el mapa en una pestaña nueva del móvil)
+            await page.launch_url(data_url)
+            
+            status.value = "¡Mapa abierto en pestaña nueva!"
+        except Exception as ex:
+            status.value = f"Error: {str(ex)}"
         
         loading.visible = False
-        status.value = f"Mostrando clientes de: {selector.value}"
         page.update()
 
     selector = ft.Dropdown(
         label="Provincia",
-        width=250,
-        options=[
-            ft.dropdown.Option("TODAS"),
-            ft.dropdown.Option("MADRID"),
-            ft.dropdown.Option("TOLEDO"),
-            ft.dropdown.Option("GUADALAJARA"),
-        ],
+        width=300,
+        options=[ft.dropdown.Option("TODAS"), ft.dropdown.Option("MADRID"), 
+                 ft.dropdown.Option("TOLEDO"), ft.dropdown.Option("GUADALAJARA")],
         value="TODAS"
     )
 
     page.add(
-        ft.Column([
-            ft.Row([
-                ft.Icon(ft.Icons.MAP_SHARP, color="blue"),
-                ft.Text("Buscador de Clientes 2026", size=20, weight="bold")
-            ], alignment="center"),
-            ft.Row([selector, ft.ElevatedButton("VER MAPA", on_click=mostrar_mapa, icon=ft.Icons.SEARCH)], alignment="center"),
-            loading,
-            status,
-            ft.Container(content=mapa_web, expand=True, border=ft.border.all(1, "grey"), border_radius=10)
-        ], expand=True)
+        ft.Icon(ft.Icons.MAP_ROUNDED, size=50, color="blue"),
+        ft.Text("Visor de Clientes", size=24, weight="bold"),
+        selector,
+        ft.ElevatedButton("ABRIR MAPA INTERACTIVO", on_click=mostrar_mapa, icon=ft.Icons.OPEN_IN_BROWSER),
+        loading,
+        status
     )
 
-# Configuración para servidores en la nube (Render/Heroku/Fly.io)
 if __name__ == "__main__":
-    # El puerto lo asigna el servidor automáticamente
-    port = int(os.getenv("PORT", 8080))
+    port = int(os.getenv("PORT", 8080))    
     ft.run(main, port=port)
