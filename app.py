@@ -35,8 +35,8 @@ class MapManager:
             clientes = json.load(f)
 
         colores_grupos = {
-            "NEOPRO": "lightblue", "EHLIS": "red", "ASIDE": "cadetblue",
-            "CECOFERSA": "darkred", "COFERDROZA": "darkblue",
+            "NEOPRO": "lightblue", "EHLIS": "red", "ASIDE": "black",
+            "CECOFERSA": "purple", "COFERDROZA": "darkblue",
             "EL SABIO": "orange", "FACTOR PRO": "orange", "GRUPO GCI": "orange"
         }
 
@@ -68,33 +68,60 @@ class MapManager:
                     await asyncio.sleep(1)
 
             if "lat" in c:
-                grupo_raw = str(c.get("Grupo", "")).upper().strip()
-                color_icono = colores_grupos.get(grupo_raw, "gray")
+                # 2. Lógica para asignar VERDE si no hay grupo
+                grupo_raw = str(c.get("Grupo", "")).strip()
+                
+                if grupo_raw == "" or grupo_raw.upper() == "NAN":
+                    color_icono = "green"
+                    grupo_display = "Sin Grupo"
+                else:
+                    color_icono = colores_grupos.get(grupo_raw.upper(), "green") # Verde por defecto
+                    grupo_display = grupo_raw
+
+                nombre = c.get('Nombre', 'Cliente')
+                direccion = c.get('Dirección', 'No disponible')
+                poblacion = c.get('Población ', 'No disponible')
+                
                 info_popup = f"""
-                <div style='font-family: Arial; font-size: 13px; width: 200px;'>
-                    <b>{c.get('Nombre')}</b><br><hr>
-                    <b>Población:</b> {c.get('Población ')}<br>
-                    <b>Grupo:</b> {c.get('Grupo')}
+                <div style='font-family: Arial; font-size: 13px; width: 220px;'>
+                    <b style='color: #2c3e50; font-size: 15px;'>{nombre}</b><br>
+                    <hr style='margin: 8px 0;'>
+                    <b>Dirección:</b> {direccion}<br>
+                    <b>Población:</b> {poblacion}<br>
+                    <b>Grupo:</b> {grupo_display}
                 </div>"""
+                
                 folium.Marker(
                     location=[c["lat"], c["lon"]],
-                    popup=folium.Popup(info_popup, max_width=300),
+                    popup=folium.Popup(info_popup, max_width=320),
+                    tooltip=nombre,
                     icon=folium.Icon(color=color_icono, icon="flag")
                 ).add_to(mapa)
 
-        # Leyenda HTML
+        # 2. AÑADIR LA LEYENDA ACTUALIZADA
         template = """
         {% macro html(this, kwargs) %}
-        <div style='position: fixed; z-index:9999; border:2px solid grey; background-color:rgba(255, 255, 255, 0.8);
-             border-radius:6px; padding: 10px; font-size:12px; right: 20px; bottom: 20px;'>
-          <b>Leyenda Grupos</b><br>
-          <span style='background:lightblue; width:10px; height:10px; display:inline-block;'></span> Neopro<br>
-          <span style='background:red; width:10px; height:10px; display:inline-block;'></span> Ehlis<br>
-          <span style='background:darkblue; width:10px; height:10px; display:inline-block;'></span> Coferdroza<br>
-          <span style='background:orange; width:10px; height:10px; display:inline-block;'></span> Naranjas (GCI/Sabio/Factor)
+        <div id='maplegend' class='maplegend' 
+            style='position: fixed; z-index:9999; border:2px solid grey; background-color:rgba(255, 255, 255, 0.8);
+             border-radius:6px; padding: 10px; font-size:13px; right: 20px; bottom: 20px; font-family: Arial;'>
+        <div style='font-weight: bold; margin-bottom: 5px;'>Grupos de Clientes</div>
+        <div class='legend-scale'>
+            <ul class='legend-labels' style='list-style:none; padding:0; margin:0;'>
+              <li><span style='background:lightblue; width:12px; height:12px; display:inline-block; border:1px solid #666;'></span> Neopro</li>
+              <li><span style='background:red; width:12px; height:12px; display:inline-block; border:1px solid #666;'></span> Ehlis</li>
+              <li><span style='background:black; width:12px; height:12px; display:inline-block; border:1px solid #666;'></span> Aside</li>
+              <li><span style='background:purple; width:12px; height:12px; display:inline-block; border:1px solid #666;'></span> Cecofersa</li>
+              <li><span style='background:darkblue; width:12px; height:12px; display:inline-block; border:1px solid #666;'></span> Coferdroza</li>
+              <li><span style='background:orange; width:12px; height:12px; display:inline-block; border:1px solid #666;'></span> Sabio / Factor Pro / GCI</li>
+              <li><span style='background:green; width:12px; height:12px; display:inline-block; border:1px solid #666;'></span> Sin Grupo / Otros</li>
+            </ul>
         </div>
-        {% endmacro %}"""
-        macro = MacroElement(); macro._template = Template(template)
+        </div>
+        {% endmacro %}
+        """
+
+        macro = MacroElement()
+        macro._template = Template(template)
         mapa.get_root().add_child(macro)
 
         if actualizado:
