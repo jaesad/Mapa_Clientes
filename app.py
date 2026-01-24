@@ -10,7 +10,6 @@ if 'lista_negra' not in st.session_state:
     st.session_state.lista_negra = []
     
 # --- CONFIGURACIÓN ---
-
 # Render leerá esto desde sus "Environment Variables"
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
 REPO_OWNER = "jaesad"
