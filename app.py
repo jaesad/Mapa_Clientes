@@ -4,6 +4,10 @@ from streamlit_folium import st_folium
 from folium.plugins import LocateControl  # Plugin oficial para GPS
 import requests
 import os
+from dotenv import load_dotenv
+
+# Cargar variables de entorno desde .env
+load_dotenv()
 
 # Creamos la memoria persistente para la sesión actual
 if 'lista_negra' not in st.session_state:
