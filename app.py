@@ -8,7 +8,7 @@ import os
 # Creamos la memoria persistente para la sesión actual
 if 'lista_negra' not in st.session_state:
     st.session_state.lista_negra = []
-    
+
 # --- CONFIGURACIÓN ---
 # Render leerá esto desde sus "Environment Variables"
 GITHUB_TOKEN = os.getenv("MY_GITHUB_TOKEN")
@@ -150,7 +150,7 @@ if clientes is not None:
                     prefijo = "fa"
                 else:
                     grupo_raw = str(c.get("Grupo", "OTROS")).upper()
-                    color_puntero = colores_dict.get(grupo_raw, "green")
+                    color_puntero = colores_leyenda.get(grupo_raw, "green")
                     icono_puntero = "info-sign"
                     prefijo = "glyphicon"
 
