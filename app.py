@@ -11,7 +11,7 @@ if 'lista_negra' not in st.session_state:
     
 # --- CONFIGURACIÓN ---
 # Render leerá esto desde sus "Environment Variables"
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
+GITHUB_TOKEN = os.getenv("MY_GITHUB_TOKEN")
 REPO_OWNER = "jaesad"
 REPO_NAME = "Mapa_Clientes"
 FILE_JSON = "Clientes.json"
