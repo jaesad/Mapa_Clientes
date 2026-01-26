@@ -116,9 +116,16 @@ if clientes is not None:
     for c in clientes:
         if not isinstance(c, dict): continue
         
-        # 1. Extraemos los datos básicos primero
+        # 1. Extraemos los datos básicos
         nombre_c = str(c.get('Nombre', '')).upper()
         prov_c = str(c.get("Provincia", "")).upper()
+        
+        # --- NUEVA LÓGICA: LEER ESTADO PERMANENTE DEL JSON ---
+        # Miramos si en el archivo JSON ese cliente ya tiene la X
+        es_permanente = str(c.get("Estado", "")).upper() == "X"
+        
+        # El cliente será negro si está en el JSON con X O si lo has marcado ahora
+        marcar_negro = es_permanente or (nombre_c in clientes_con_x)
         
         # Filtro dinámico (Provincia y Búsqueda por texto)
         if (provincia == "TODAS" or provincia in prov_c) and (busqueda.upper() in nombre_c):
@@ -130,7 +137,7 @@ if clientes is not None:
                 poblacion = c.get('Población ', 'S/P')
                 grupo_raw = str(c.get("Grupo", "OTROS")).upper()
                 
-                # 2. DEFINIMOS EL POPUP (Esto tiene que ir antes del Marker)
+                # 2. DEFINIMOS EL POPUP
                 url_gps = f"https://www.google.com/maps/dir/?api=1&destination={lat},{lon}"
                 
                 html_popup = f"""
@@ -140,24 +147,27 @@ if clientes is not None:
                         <b>📍 Ciudad:</b> {poblacion}<br>
                         <b>🏷️ Grupo:</b> {grupo_raw}
                     </p>
-                    <p style="color: red; font-size: 10px;">Para marcar con X, búscalo en la lista de la izquierda.</p>
-                    <a href="{url_gps}" target="_blank" style="...">🚗 CÓMO LLEGAR</a>
+                    {"<p style='color: gray; font-size: 10px;'>📌 Marcado permanente en JSON</p>" if es_permanente else "<p style='color: red; font-size: 10px;'>Para marcar con X, búscalo en la lista izquierda.</p>"}
+                    <a href="{url_gps}" target="_blank" 
+                       style="background-color: #1D3557; color: white; padding: 10px; 
+                              text-decoration: none; border-radius: 5px; font-weight: bold; 
+                              display: block; text-align: center; margin-top: 10px;">
+                        🚗 CÓMO LLEGAR
+                    </a>
                 </div>
                 """
 
-                # 3. LÓGICA DE LA "X" NEGRA
-                marcar_negro = nombre_c in clientes_con_x
-                
+                # 3. ASIGNACIÓN DE ICONOS Y COLORES
                 if marcar_negro:
                     color_puntero = "black"
                     icono_puntero = "times" # La X
-                    prefijo = "fa"
+                    prefijo = "fa"          # FontAwesome
                 else:
-                    grupo_raw = str(c.get("Grupo", "OTROS")).upper()
                     color_puntero = colores_leyenda.get(grupo_raw, "green")
                     icono_puntero = "info-sign"
                     prefijo = "glyphicon"
 
+                # 4. CREAR EL MARCADOR
                 folium.Marker(
                     [lat, lon],
                     popup=folium.Popup(html_popup, max_width=250),
@@ -167,6 +177,7 @@ if clientes is not None:
                 
                 coordenadas.append([lat, lon])
                 puntos_encontrados += 1
+                
             except Exception as e:
                 continue
 

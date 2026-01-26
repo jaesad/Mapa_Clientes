@@ -1771,7 +1771,8 @@
         "Email": "ferreteriamanoli@gmail.com",
         "Grupo": "EHLIS",
         "lat": 40.34856837575999,
-        "lon": -3.7063048221367776
+        "lon": -3.7063048221367776,
+        "Estado": "X"
     },
     {
         "Nombre": "FERRETERIA VENECIA(4)",
@@ -3451,8 +3452,8 @@
         "Provincia": "Toledo",
         "Tlefono": "925207307",
         "Grupo": "NEOPRO",
-        "lat": 39.7668796,
-        "lon": -3.173851
+        "lat": 39.76235682126461, 
+        "lon": -3.168832250874907
     },
     {
         "Nombre": "FERRETERIA SAN ANTON, S.L.",
@@ -3531,7 +3532,8 @@
         "Email": "jose.gal.fer@hotmail.com",
         "Grupo": "COFERDROZA",
         "lat": 39.87314161433011,
-        "lon": -3.6177965344458727
+        "lon": -3.6177965344458727,
+        "Estado": "X"
     },
     {
         "Nombre": "PINTURAS Y BRICOLAGE LA UNION, S.L.",
@@ -3761,7 +3763,8 @@
         "Tlefono": "925141524",
         "Grupo": "NEOPRO",
         "lat": 39.98353866806724,
-        "lon": -3.440543321157867
+        "lon": -3.440543321157867,
+        "Estado": "X"
     },
     {
         "Nombre": "FERRETERIA LEPANTO, S.L.",
@@ -3819,7 +3822,8 @@
         "Email": "recambioslaorden@hotmail.com",
         "Grupo": "GRUPO GCI",
         "lat": 39.5932519,
-        "lon": -3.0474614
+        "lon": -3.0474614,
+        "Estado": "X"
     },
     {
         "Nombre": "FRANCISCO JAVIER BALLESTEROS FLORES (FELECTROAUTO)",
@@ -3831,7 +3835,8 @@
         "Email": "ventas@felectroauto.com",
         "Grupo": "EL SABIO",
         "lat": 39.5887662,
-        "lon": -3.0343928
+        "lon": -3.0343928,
+        "Estado": "X"
     },
     {
         "Nombre": "DALPES, S.A.",
