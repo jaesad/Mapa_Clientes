@@ -3553,7 +3553,8 @@
         "Tlefono": "925532213",
         "Grupo": "NEOPRO",
         "lat": 40.112933,
-        "lon": -3.8569435
+        "lon": -3.8569435,
+        "Estado": "X"
     },
     {
         "Nombre": "SUMINISTROS Y SERVICIOS FERRYMAR, S.L.",
@@ -3849,7 +3850,8 @@
         "Tlefono": "925522461",
         "Grupo": "NEOPRO",
         "lat": 40.0533957,
-        "lon": -3.9931919
+        "lon": -3.9931919,
+        "Estado": "X"
     },    
     {
         "Nombre": "SUMINISTROS INDUSTRIALES COBSA, S.L.",
@@ -4062,8 +4064,8 @@
         "Tlefono": "925 232 200",
         "Email": "sitasa@sitasa.com",
         "Grupo": "CECOFERSA",
-        "lat": 39.9587566,
-        "lon": -3.880095
+        "lat": 39.86877089707161,
+        "lon": -3.9600899191193197
     },
     {
         "Nombre": "FERRETERIA JULIAN, S.L.",
