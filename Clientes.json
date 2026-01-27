@@ -3618,7 +3618,8 @@
         "Email": "alcala@repuestosdiaz.com",
         "Grupo": "EHLIS",
         "lat": 39.8703659,
-        "lon": -4.3600163
+        "lon": -4.3600163,
+        "Estado": "X"
     },
     {
         "Nombre": "MURO SUMINISTROS Y SERVICIOS,",
@@ -3629,7 +3630,8 @@
         "Email": "administracion@murosuministros.com",
         "Grupo": "EHLIS",
         "lat": 39.8719767,
-        "lon": -4.3583227
+        "lon": -4.3583227,
+        "Estado": "X"
     },
     {
         "Nombre": "JESÚS MARÍA VILLALUENGA FERNÁNDEZ (FER. VILLAFER)",
@@ -3641,7 +3643,8 @@
         "Email": "jvhcalefaccion@hotmail.com",
         "Grupo": "GRUPO GCI",
         "lat": 39.8630469,
-        "lon": -4.3596654
+        "lon": -4.3596654,
+        "Estado": "X"
     },
     {
         "Nombre": "JORGE HIGUERA SERRANO (FERRETERÍA EL MAZO)",
@@ -3908,7 +3911,8 @@
         "Email": "ferreteriareviejo@gmail.com",
         "Grupo": "COFERDROZA",
         "lat": 39.9661115,
-        "lon": -4.8095891
+        "lon": -4.8095891,
+        "Estado": "X"
     },
     {
         "Nombre": "FERRETERIA PEDRO DURAN, S.L. ",
@@ -3932,7 +3936,8 @@
         "Tlefono": "925701860",
         "Email": "ahema@ahema.es",
         "lat": 39.95960439681223,
-        "lon": -4.846832789754372
+        "lon": -4.846832789754372,
+        "Estado": "X"
     },
     {
         "Nombre": "SUMINISTROS ELECTRICOS MORALES",
@@ -3943,7 +3948,8 @@
         "Email": "belen@suministrosmorales.com",
         "Grupo": "EHLIS",
         "lat": 39.9624454,
-        "lon": -4.821275
+        "lon": -4.821275,
+        "Estado": "X"
     },
     {
         "Nombre": "HERRAMIENTAS TALAVERA, S.L.",
@@ -3987,7 +3993,8 @@
         "Email": "ferreteriareviejo@gmail.com",
         "Grupo": "COFERDROZA",
         "lat": 39.964315,
-        "lon": -4.8311396
+        "lon": -4.8311396,
+        "Estado": "X"
     },
     {
         "Nombre": "GONZALO ROMA SUSANA",
