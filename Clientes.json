@@ -84,8 +84,8 @@
         "Tlefono": "949201918",
         "Email": "ferreteria@alcasum.es",
         "Grupo": "COFERDROZA",
-        "lat": 40.9828243,
-        "lon": -2.8724536
+        "lat": 40.62709977030398, 
+        "lon": -3.1945502037390403
     },
     {
         "Nombre": "LARENA BAILON,C.B.",
@@ -220,7 +220,8 @@
         "Email": "compras@ferreteriapastorblanco.com",
         "Grupo": "COFERDROZA",
         "lat": 40.4571543,
-        "lon": -3.1478686
+        "lon": -3.1478686,
+        "Estado": "X"
     },
     {
         "Nombre": "FERRETERIAS PASTOR BLANCO",
@@ -232,7 +233,8 @@
         "Email": "compras@ferreteriapastorblanco.com",
         "Grupo": "COFERDROZA",
         "lat": 40.49393293362308,
-        "lon": -3.1833220320587596
+        "lon": -3.1833220320587596,
+        "Estado": "X"
     },
     {
         "Nombre": "JESÚS CÓRDOBA CAÑAS",
