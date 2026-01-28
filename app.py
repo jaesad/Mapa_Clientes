@@ -81,7 +81,7 @@ if clientes is not None:
     st.sidebar.subheader("Leyenda de Grupos")
     # Colores
     colores_leyenda = {
-        "NEOPRO": "lightblue", "EHLIS": "red", "ASIDE": "cadetblue",
+        "NEOPRO": "lightblue", "EHLIS": "red", "ASIDE": "yellow",
         "CECOFERSA": "darkred", "COFERDROZA": "darkblue", "EL SABIO": "orange",
         "FACTOR PRO": "orange", "GRUPO GCI": "orange", "OTROS": "green"
     }
