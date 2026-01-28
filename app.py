@@ -81,7 +81,7 @@ if clientes is not None:
     st.sidebar.subheader("Leyenda de Grupos")
     # Colores
     colores_leyenda = {
-        "NEOPRO": "lightblue", "EHLIS": "red", "ASIDE": "yellow",
+        "NEOPRO": "lightblue", "EHLIS": "red", "ASIDE": "purple",
         "CECOFERSA": "darkred", "COFERDROZA": "darkblue", "EL SABIO": "orange",
         "FACTOR PRO": "orange", "GRUPO GCI": "orange", "OTROS": "green"
     }
@@ -145,6 +145,7 @@ if clientes is not None:
                     <h4 style="margin:0; color: black; font-weight: bold;">{nombre_c}</h4>
                     <p style="margin:5px 0; font-size:12px;">
                         <b>📍 Ciudad:</b> {poblacion}<br>
+                        <b>🏠 Dirección:</b> {direccion}<br>
                         <b>🏷️ Grupo:</b> {grupo_raw}
                     </p>
                     {"<p style='color: gray; font-size: 10px;'>📌 Marcado permanente en JSON</p>" if es_permanente else "<p style='color: red; font-size: 10px;'>Para marcar con X, búscalo en la lista izquierda.</p>"}
