@@ -3780,7 +3780,8 @@
         "Email": "administracion@ferreterialepanto.es",
         "Grupo": "COFERDROZA",
         "lat": 40.0812247,
-        "lon": -3.8616538
+        "lon": -3.8616538,
+        "Estado": "X"
     },
     {
         "Nombre": "FERRETERIA OCAÑA",
@@ -4017,7 +4018,8 @@
         "Tlefono": "925299438",
         "Grupo": "NEOPRO",
         "lat": 39.8606623,
-        "lon": -4.0010361
+        "lon": -4.0010361,
+        "Estado": "X"
     },
     {
         "Nombre": "FERRETERIA IMPERIAL, S.L. ",
@@ -4028,8 +4030,8 @@
         "Tlefono": "925233303",
         "Email": "cesarcompras@ferimperial.com",
         "Grupo": "COFERDROZA",
-        "lat": 39.8754574,
-        "lon": -3.9436397
+        "lat": 39.86772289971357,
+        "lon": -3.964716903776284
     },
     {
         "Nombre": "FERRETERIA D JESUS",
@@ -4040,8 +4042,8 @@
         "Tlefono": "662548186",
         "Email": "comercial@djesus.es",
         "Grupo": "NEOPRO",
-        "lat": 39.8754574,
-        "lon": -3.9436397
+        "lat": 39.86951685731888, 
+        "lon": -3.958178819119269
     },
     {
         "Nombre": "ANGEL ARRABAL NEVOT, S.L.",
@@ -4109,7 +4111,8 @@
         "Email": "deancosmaquinaria@gmail.com",
         "Grupo": "GRUPO GCI",
         "lat": 39.8617869,
-        "lon": -4.0059029
+        "lon": -4.0059029,
+        "Estado": "X"
     },
     {
         "Nombre": "FERRETERIAS CARRILLO, .S.A. ",
@@ -4195,7 +4198,8 @@
         "Email": "jcerroh@gmail.com",
         "Grupo": "COFERDROZA",
         "lat": 40.0266933,
-        "lon": -3.9129542
+        "lon": -3.9129542,
+        "Estado": "X"
     },
     {
         "Nombre": "CM STORE FERRETERIA Y BRICOLAGE SL.",
