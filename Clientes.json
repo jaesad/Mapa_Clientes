@@ -29,7 +29,8 @@
         "Email": "laferrealovera@hotmail.com",
         "Grupo": "EHLIS",
         "lat": 40.5982978,
-        "lon": -3.2472244
+        "lon": -3.2472244,
+        "Estado": "X"
     },
     {
         "Nombre": "DE MINGO CASTEL JOSE MARIA",
@@ -40,7 +41,8 @@
         "Email": "demingo@ferreteriademingo.com",
         "Grupo": "EHLIS",
         "lat": 40.5629777,
-        "lon": -3.2655047
+        "lon": -3.2655047,
+        "Estado": "X"
     },
     {
         "Nombre": "CABALLERO RODRIGUEZ JOSE",
@@ -73,7 +75,8 @@
         "Email": "cabreriz@cadena88.com",
         "Grupo": "EHLIS",
         "lat": 40.63274643001627,
-        "lon": -3.1723632171650142
+        "lon": -3.1723632171650142,
+        "Estado": "X"
     },
     {
         "Nombre": "ALCASUM",
@@ -118,7 +121,8 @@
         "Email": "suministros@domarco.com",
         "Grupo": "GRUPO GCI",
         "lat": 40.65252921235145,
-        "lon": -3.1827891265324113
+        "lon": -3.1827891265324113,
+        "Estado": "X"
     },
     {
         "Nombre": "AUTORECAMBIOS GUADALAJARA S.L.",
@@ -130,7 +134,8 @@
         "Email": "fmartinez@autorecambiosguadalajara.com",
         "Grupo": "GRUPO GCI",
         "lat": 40.6314318,
-        "lon": -3.1850961
+        "lon": -3.1850961,
+        "Estado": "X"
     }, 
     {
         "Nombre": "SODEX SOLUCIONES Y SERVICIOS S.L.",
@@ -2338,8 +2343,8 @@
         "Provincia": "Madrid",
         "Tlefono": "918259153",
         "Email": "m.encinas@suministrosvican.com",
-        "lat": 40.53208653254315,
-        "lon": -3.296817345550389
+        "lat": 40.53200325354715, 
+        "lon": -3.2967691282104408
     },
     {
         "Nombre": "SUMINISTROS AUÑON, S.L. (CECOFERSA)",
