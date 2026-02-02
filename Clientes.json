@@ -349,7 +349,8 @@
         "Tlefono": "918890859",
         "Grupo": "NEOPRO",
         "lat": 40.4788255,
-        "lon": -3.3720422
+        "lon": -3.3720422,
+        "Estado": "X"
     },
     {
         "Nombre": "FERRETERIA UCEDA, S.L.",
@@ -359,7 +360,8 @@
         "Tlefono": "918829341",
         "Grupo": "NEOPRO",
         "lat": 40.47330793211839,
-        "lon": -3.369985149540352
+        "lon": -3.369985149540352,
+        "Estado": "X"
     },
     {
         "Nombre": "FERRETERIA ACAS, S.A.",
@@ -696,8 +698,8 @@
         "Tlefono": "918712413",
         "Email": "jose@suministros.org",
         "Grupo": "INDUSTRIAL PRO",
-        "lat": 40.3119283,
-        "lon": -3.4880227
+        "lat": 40.30548024638719, 
+        "lon": -3.45583
     },
     {
         "Nombre": "MADRIFERR, S.L.Cita",
@@ -823,8 +825,8 @@
         "Provincia": "Madrid",
         "Tlefono": "918765034",
         "Grupo": "NEOPRO",
-        "lat": 40.33435144716677,
-        "lon": -3.3685656897371845
+        "lat": 40.3335112,
+        "lon": -3.368042
     },
     {
         "Nombre": "SEGUNDO PRIEGO, S.A.",
@@ -2729,7 +2731,8 @@
         "Email": "marfil.gestion@yahoo.com",
         "Grupo": "COFERDROZA",
         "lat": 40.3519064,
-        "lon": -3.5425689
+        "lon": -3.5425689,
+        "Estado": "X"
     },
     {
         "Nombre": "NUSAN SUM. IND.,S.L.",
@@ -2740,7 +2743,8 @@
         "Email": "nusan@nusan.es",
         "Grupo": "EHLIS",
         "lat": 40.351539,
-        "lon": -3.5417769
+        "lon": -3.5417769,
+        "Estado": "X"
     },
     {
         "Nombre": "FERRETERÍA INDUSTRIAL HIDRAFERR S.L.",
@@ -3237,15 +3241,15 @@
         "lon": -3.4853699
     },
     {
-        "Nombre": "FERRETERIA Y SUM. INDUS. EUROF",
+        "Nombre": "FERRETERIA Y SUM. INDUS. EUROFER, S.L.",
         "Dirección": "Camino De Los Alamillos, 5",
         "Población ": "Velilla De San Antonio",
         "Provincia": "Madrid",
         "Tlefono": "686006308",
         "Email": "josemiguel@eurofer.es",
         "Grupo": "EHLIS",
-        "lat": 40.3765993,
-        "lon": -3.4971625
+        "lat": 40.36817319578228,
+        "lon": -3.490165830852043
     },
     {
         "Nombre": "CESAR BLANCO MEJIAS",
