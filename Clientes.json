@@ -251,7 +251,8 @@
         "Email": "info@materialescordoba.com",
         "Grupo": "GRUPO GCI-EHLIS",
         "lat": 40.48350967244247,
-        "lon": -2.721884551628103
+        "lon": -2.721884551628103,
+        "Estado": "X"
     },    
     {
         "Nombre": "BRICOLAGE QUINTANARES, S.L.",
@@ -2810,7 +2811,8 @@
         "Email": "damaso@shima.com.es",
         "Grupo": "GRUPO GCI",
         "lat": 40.455273520409875,
-        "lon": -3.490333738807272
+        "lon": -3.490333738807272,
+        "Estado": "X"
     },
     {
         "Nombre": "COMERCIAL DURAN MIMBRERA",
@@ -2833,7 +2835,8 @@
         "Email": "jes.morales@alquiaga.com",
         "Grupo": "COFERDROZA",
         "lat": 40.4510649,
-        "lon": -3.4911311
+        "lon": -3.4911311,
+        "Estado": "X"
     },    
     {
         "Nombre": "SUMINISTROS AVENIDASC, S.L.",
@@ -3023,7 +3026,8 @@
         "Provincia": "Madrid",
         "Grupo": "NEOPRO",
         "lat": 40.4580091,
-        "lon": -3.4531227
+        "lon": -3.4531227,
+        "Estado": "X"
     },
     {
         "Nombre": "HERRAJES JARDIN, S. A.",
@@ -3033,7 +3037,8 @@
         "Tlefono": "916563848",
         "Grupo": "NEOPRO",
         "lat": 40.4627795,
-        "lon": -3.4778556
+        "lon": -3.4778556,
+        "Estado": "X"
     },
     {
         "Nombre": "SUMINISTROS INDUS. GARRO, S.L.",
@@ -3238,7 +3243,8 @@
         "Tlefono": "915464449",
         "Grupo": "NEOPRO",
         "lat": 40.369218,
-        "lon": -3.4853699
+        "lon": -3.4853699,
+        "Estado": "X"
     },
     {
         "Nombre": "FERRETERIA Y SUM. INDUS. EUROFER, S.L.",
