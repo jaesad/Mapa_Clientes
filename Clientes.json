@@ -18,7 +18,8 @@
         "Email": "lgarcia@ferlimp.com",
         "Grupo": "EHLIS-NEOPRO",
         "lat": 40.320059331620655, 
-        "lon": -2.8462444969028007
+        "lon": -2.8462444969028007,
+        "Estado": "X"
     },
     {
         "Nombre": "LOPEZ SANCHEZ JUAN ANGEL",
@@ -147,7 +148,8 @@
         "Email": "elsotoferreteria@gmail.com",
         "Grupo": "GRUPO GCI",
         "lat": 40.18056467749472,
-        "lon": -3.0547522790097936
+        "lon": -3.0547522790097936,
+        "Estado": "X"
     },
     {
         "Nombre": "GARCIA GRANIZO, PABLO",
@@ -818,17 +820,7 @@
         "Grupo": "EHLIS",
         "lat": 40.3335112,
         "lon": -3.368042
-    },
-    {
-        "Nombre": "FERRETERIA SUMINISTROS INDUSTRIALES FERGALU",
-        "Dirección": "Cl Estaño, 1-3 Pol.Ind Borondo",
-        "Población ": "Campo Real",
-        "Provincia": "Madrid",
-        "Tlefono": "918765034",
-        "Grupo": "NEOPRO",
-        "lat": 40.3335112,
-        "lon": -3.368042
-    },
+    },    
     {
         "Nombre": "SEGUNDO PRIEGO, S.A.",
         "Contacto": "Victor/Hugo hijo",
