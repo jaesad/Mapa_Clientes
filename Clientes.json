@@ -1148,7 +1148,8 @@
         "Email": "info@ferreteriatorrelaguna.es",
         "Grupo": "EHLIS",
         "lat": 40.7673177,
-        "lon": -3.5817662
+        "lon": -3.5817662,
+        "Estado": "X"
     },
     {
         "Nombre": "FERRETERIA TROPICAL HERMANOS LIRAS S.L.",
@@ -2624,7 +2625,8 @@
         "Email": "suministrospedrezuela@hotmail.com",
         "Grupo": "EHLIS",
         "lat": 40.7453371,
-        "lon": -3.6030719
+        "lon": -3.6030719,
+        "Estado": "X"
     },
     {
         "Nombre": "SEGUNDO PRIEGO, S.A. Cita",
@@ -3361,7 +3363,8 @@
         "Email": "sg@piscinasysuministros.com",
         "Grupo": "EHLIS",
         "lat": 40.18293880156386,
-        "lon": -3.8862052085954293
+        "lon": -3.8862052085954293,
+        "Estado": "X"
     },
     {
         "Nombre": "BRESME MADRID, S.L.",
