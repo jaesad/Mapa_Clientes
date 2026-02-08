@@ -1445,7 +1445,8 @@
         "Email": "alge@ferreteriaalge.es",
         "Grupo": "COFERDROZA",
         "lat": 40.21400017978564,
-        "lon": -3.853534089742735
+        "lon": -3.853534089742735,
+        "Estado": "X"
     },
     {
         "Nombre": "SOLOMAQUINA SUMINISTROS INDUSTRIALES S.L.",
@@ -1500,8 +1501,8 @@
         "Provincia": "Madrid",
         "Tlefono": "916062914",
         "Email": "sumillescas.comercial@gmail.com",
-        "lat": 40.2740469,
-        "lon": -3.8136497
+        "lat": 40.27345,
+        "lon": -3.81293        
     },
     {
         "Nombre": "FERRETERIA ALTHER",
@@ -1512,7 +1513,8 @@
         "Email": "alther@altherferreteria.net",
         "Grupo": "COFERDROZA",
         "lat": 40.25309850653827,
-        "lon": -3.8225508897409575
+        "lon": -3.8225508897409575,
+        "Estado": "X"
     },
     {
         "Nombre": "SOLOZONO MADRID, S.A.",
@@ -1545,7 +1547,8 @@
         "Tlefono": "916480774",
         "Grupo": "NEOPRO",
         "lat": 40.2759545,
-        "lon": -3.8199257
+        "lon": -3.8199257,
+        "Estado": "X"
     },
     {
         "Nombre": "SUFEIN, S.L.",
@@ -1556,8 +1559,8 @@
         "Tlefono": "916151415",
         "Email": "carlos@sufein.com",
         "Grupo": "EHLIS",
-        "lat": 40.27659732373728,
-        "lon": -3.814133784046583
+        "lat": 40.27443,
+        "lon": -3.81410
     },
     {
         "Nombre": "PERALES TRIGUERO ANTONIO",
@@ -3041,7 +3044,8 @@
         "Email": "gestionproveedores@suministrosgarro.com",
         "Grupo": "EHLIS",
         "lat": 40.188505088235516,
-        "lon": -3.8000841897439215
+        "lon": -3.8000841897439215,
+        "Estado": "X"
     },
     {
         "Nombre": "M. DEL RIO E HIJOS",
@@ -3064,7 +3068,8 @@
         "Email": "pragarodamientos@pragarodamientos.com",
         "Grupo": "GRUPO GCI",
         "lat": 40.18881018028091,
-        "lon": -3.7991492599876997
+        "lon": -3.7991492599876997,
+        "Estado": "X"
     },
     {
         "Nombre": "CRISTALERIAS TORRELODONES S.A.",
