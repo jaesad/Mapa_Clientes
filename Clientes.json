@@ -1961,7 +1961,8 @@
         "Email": "tienda@ferrocolor.es",
         "Grupo": "EL SABIO",
         "lat": 40.4011745,
-        "lon": -3.698001
+        "lon": -3.698001,
+        "Estado": "X"
     },
     {
         "Nombre": "FERRETERÍA DIEGO DE LEÓN S.L.",
@@ -2062,17 +2063,7 @@
         "Grupo": "EHLIS",
         "lat": 40.3910156,
         "lon": -3.711674
-    },
-    {
-        "Nombre": "VILLAR CORCES S.L.",
-        "Dirección": "Paseo De Las Delicias, 46",
-        "Población ": "Madrid",
-        "Provincia": "Madrid",
-        "Tlefono": "915395799",
-        "Grupo": "NEOPRO",
-        "lat": 40.4013578,
-        "lon": -3.6940987
-    },
+    },    
     {
         "Nombre": "BLANCO DIAZ MIGUEL",
         "Dirección": "Pilar De Zaragoza, 48",
@@ -2185,7 +2176,7 @@
         "lon": -3.7417266743917894
     },
     {
-        "Nombre": "VILLAR CORCES, S.L. cita",
+        "Nombre": "VILLAR CORCES, S.L.",
         "Contacto": "Luis Alberto",
         "Dirección": "Pª De Las Delicias, 46",
         "Población ": "Madrid-Delicias",
@@ -3364,7 +3355,8 @@
         "Tlefono": "918170990",
         "Grupo": "NEOPRO",
         "lat": 40.214148165444804,
-        "lon": -4.0510784185782605
+        "lon": -4.0510784185782605,
+        "Estado": "X"
     },    
     {
         "Nombre": "GUTIERREZ SANTILLANA ENRIQUE",
