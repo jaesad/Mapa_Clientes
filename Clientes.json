@@ -1276,7 +1276,7 @@
         "lon": -3.8234369
     },
     {
-        "Nombre": "FERRETERIA EL ARROYO, S.A. Tardes",
+        "Nombre": "FERRETERIA EL ARROYO, S.A.",
         "Contacto": "Julio",
         "Dirección": "Plaza Valdeserrano, 9",
         "Población ": "Fuenlabrada",
@@ -1306,17 +1306,7 @@
         "Grupo": "FACTOR PRO",
         "lat": 40.283838390159254,
         "lon": -3.778111021294709
-    },
-    {
-        "Nombre": "FERRETERIA EL ARROYO, S. L.",
-        "Dirección": "Pz Valdeserrano, 9",
-        "Población ": "Fuenlabrada",
-        "Provincia": "Madrid",
-        "Tlefono": "916903860",
-        "Grupo": "NEOPRO",
-        "lat": 40.27674193722245,
-        "lon": -3.80133051857535
-    },
+    },    
     {
         "Nombre": "SUMINISTROS SARGUI, S.L. ",
         "Contacto": "David",
@@ -4186,7 +4176,8 @@
         "Email": "ferreteriavalmojado@gmail.com",
         "Grupo": "EHLIS",
         "lat": 40.2115202,
-        "lon": -4.0827796
+        "lon": -4.0827796,
+        "Estado": "X"
     },    
     {
         "Nombre": "SUMINISTROS ABRALDES SOLANA, S.L.",
